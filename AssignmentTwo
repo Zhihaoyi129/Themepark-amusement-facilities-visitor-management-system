@@ -1,1 +1,19 @@
+public class AssignmentTwo {
+    public static void main(String[] args) {
+        Employee operator = new Employee("张伟", 30, "男", "EMP001", "Ride Operator");
+        Ride rollerCoaster = new Ride("过山车", 2, operator);
+
+        Visitor v1 = new Visitor("小明", 20, "男", "V001", "普通");
+        Visitor v2 = new Visitor("小红", 18, "女", "V002", "普通");
+        Visitor v3 = new Visitor("小强", 25, "男", "V003", "会员");
+
+        rollerCoaster.addVisitorToQueue(v1);
+        rollerCoaster.addVisitorToQueue(v2);
+        rollerCoaster.addVisitorToQueue(v3);
+
+        rollerCoaster.printQueue();
+        rollerCoaster.runOneCycle();
+        rollerCoaster.printRideHistory();
+    }
+}
 
