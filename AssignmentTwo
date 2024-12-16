@@ -1,18 +1,30 @@
 public class AssignmentTwo {
     public static void main(String[] args) {
+        // 创建操作员和游乐设施
         Employee operator = new Employee("张伟", 30, "男", "EMP001", "Ride Operator");
-        Ride rollerCoaster = new Ride("过山车", 2, operator);
+        Ride rollerCoaster = new Ride("过山车", 5, operator);
 
-        Visitor v1 = new Visitor("小明", 20, "男", "V001", "普通");
-        Visitor v2 = new Visitor("小红", 18, "女", "V002", "普通");
-        Visitor v3 = new Visitor("小强", 25, "男", "V003", "会员");
-        Visitor v4 = new Visitor("小芳", 22, "女", "V004", "普通");
+        // 创建游客
+        Visitor v1 = new Visitor("张三", 20, "男", "V001", "普通");
+        Visitor v2 = new Visitor("李四", 18, "男", "V002", "普通");
+        Visitor v3 = new Visitor("王五", 25, "男", "V003", "会员");
+        Visitor v4 = new Visitor("沈六", 22, "女", "V004", "普通");
+        Visitor v5 = new Visitor("小红", 21, "女", "V005", "普通");
+        Visitor v6 = new Visitor("小芳", 16, "女", "V006", "普通");
+        Visitor v7 = new Visitor("小明", 28, "男", "V007", "会员");
+        Visitor v8 = new Visitor("小力", 29, "男", "V008", "普通");
+        Visitor v9 = new Visitor("张三", 20, "男", "V001", "普通");
 
         // 添加游客到队列
         rollerCoaster.addVisitorToQueue(v1);
         rollerCoaster.addVisitorToQueue(v2);
         rollerCoaster.addVisitorToQueue(v3);
         rollerCoaster.addVisitorToQueue(v4);
+        rollerCoaster.addVisitorToQueue(v5);
+        rollerCoaster.addVisitorToQueue(v6);
+        rollerCoaster.addVisitorToQueue(v7);
+        rollerCoaster.addVisitorToQueue(v8);
+        rollerCoaster.addVisitorToQueue(v9);
 
         // 第一次运行
         rollerCoaster.printQueue();
@@ -20,9 +32,25 @@ public class AssignmentTwo {
         rollerCoaster.printRideHistory();
 
         // 第二次运行
-        System.out.println("\n再次运行一轮游乐设施...");
+        System.out.println("\nRun another ride...");
         rollerCoaster.printQueue(); // 打印剩余队列
         rollerCoaster.runOneCycle();
         rollerCoaster.printRideHistory(); // 打印最新游玩历史
+
+        // 第三次运行
+        System.out.println("\nRun another ride...");
+        rollerCoaster.printQueue(); // 打印剩余队列
+        rollerCoaster.runOneCycle();
+        rollerCoaster.printRideHistory(); // 打印最新游玩历史
+
+        // 导出游玩历史到文件
+        System.out.println("\nExporting ride history...");
+        rollerCoaster.exportRideHistory(); // 导出游玩历史到文件
+
+        // 创建一个新的游乐设施，并导入历史记录
+        System.out.println("\nImporting ride history...");
+        Ride newRollerCoaster = new Ride("过山车", 5, operator);
+        newRollerCoaster.importRideHistory(); // 从文件中导入游玩历史
+        newRollerCoaster.printRideHistory(); // 打印导入后的游玩历史
     }
 }
