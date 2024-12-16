@@ -1,10 +1,56 @@
+/**
+ * RideInterface 接口定义了游乐设施的标准操作。
+ * 它规范了与队列和历史记录相关的功能，确保所有游乐设施类实现这些功能。
+ */
 public interface RideInterface {
+    
+    /**
+     * 将一位游客添加到等待队列中。
+     * @param visitor 要添加的 Visitor 对象（游客）。
+     */
     void addVisitorToQueue(Visitor visitor);
+
+    /**
+     * 从等待队列中移除一位游客（通常是最前面的游客）。
+     * 如果队列为空，则方法不做任何操作。
+     */
     void removeVisitorFromQueue();
+
+    /**
+     * 打印当前等待队列中的所有游客信息。
+     * 以游客加入队列的顺序（FIFO）打印。
+     */
     void printQueue();
+
+    /**
+     * 将一位游客添加到游玩历史记录中。
+     * @param visitor 要添加到历史记录的 Visitor 对象。
+     */
     void addVisitorToHistory(Visitor visitor);
+
+    /**
+     * 检查指定的游客是否已经在游玩历史记录中。
+     * @param visitor 要检查的 Visitor 对象。
+     * @return 如果游客存在于历史记录中，返回 true；否则返回 false。
+     */
     boolean checkVisitorFromHistory(Visitor visitor);
+
+    /**
+     * 返回游玩历史记录中游客的总数。
+     * @return 历史记录中的游客数量。
+     */
     int numberOfVisitors();
+
+    /**
+     * 打印所有已完成游玩的游客的详细信息。
+     * 这些游客存储在历史记录中。
+     */
     void printRideHistory();
+
+    /**
+     * 运行游乐设施的一轮循环。
+     * 根据最大载客量，从等待队列中移除游客，并将他们添加到游玩历史记录中。
+     * 如果游乐设施没有操作员或队列为空，则无法运行。
+     */
     void runOneCycle();
 }
