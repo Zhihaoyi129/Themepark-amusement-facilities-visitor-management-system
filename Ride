@@ -2,16 +2,13 @@ import java.io.*;
 import java.util.*;
 
 public class Ride implements RideInterface {
-    private String rideName;
-    private int maxRiders;
-    private Employee operator;
-    private Queue<Visitor> waitingQueue = new LinkedList<>();
-    private List<Visitor> rideHistory = new LinkedList<>();
-    private int numOfCycles;
-
-    // 构造函数
-    public Ride(String rideName, int maxRiders, Employee operator) {
-        this.rideName = rideName;
+    private final int maxRiders;
+    private final Employee operator;
+    private final Queue<Visitor> waitingQueue = new LinkedList<>();
+    private final List<Visitor> rideHistory = new LinkedList<>();
+    private int numOfCycles; 
+    
+    public Ride(String rideName, int maxRiders, Employee operator){ 
         this.maxRiders = maxRiders;
         this.operator = operator;
         this.numOfCycles = 0;
@@ -43,7 +40,9 @@ public class Ride implements RideInterface {
 
     @Override
     public void addVisitorToHistory(Visitor visitor) {
-        rideHistory.add(visitor);
+        if (!rideHistory.contains(visitor)) {
+            rideHistory.add(visitor);
+        }
     }
 
     @Override
@@ -60,7 +59,7 @@ public class Ride implements RideInterface {
     public void printRideHistory() {
         System.out.println("Play History:");
         for (Visitor v : rideHistory) {
-            System.out.println(v.getName());
+            System.out.println(v.getName() + " - " + v.getGender() + " - " + v.getVisitorID() + " - " + v.getMembershipType());
         }
     }
 
@@ -87,11 +86,14 @@ public class Ride implements RideInterface {
         System.out.println("This round is complete, total " + count + " visitors played.");
     }
 
-    // 导出游玩历史到文件
     public void exportRideHistory() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("ride_history.csv"))) {
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream("ride_history.csv"), "UTF-8"))) { // 指定 UTF-8 编码
             for (Visitor visitor : rideHistory) {
-                writer.write(visitor.getName() + "," + visitor.getVisitorID() + "," + visitor.getMembershipType() + "\n");
+                writer.write(visitor.getName() + "," 
+                            + visitor.getVisitorID() + "," 
+                            + visitor.getMembershipType() + "," 
+                            + visitor.getGender() + "\n"); // 包含性别字段
             }
             System.out.println("Ride history has been exported.");
         } catch (IOException e) {
@@ -99,17 +101,20 @@ public class Ride implements RideInterface {
         }
     }
 
-    // 从文件导入游玩历史
     public void importRideHistory() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("ride_history.csv"))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+                new FileInputStream("ride_history.csv"), "UTF-8"))) { // 设置 UTF-8 编码
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
                 String name = data[0];
                 String visitorID = data[1];
                 String membershipType = data[2];
-                Visitor visitor = new Visitor(name, 0, "", visitorID, membershipType); // 假设年龄设为0
-                rideHistory.add(visitor);
+                String gender = data[3]; // 读取性别字段
+                Visitor visitor = new Visitor(name, 0, gender, visitorID, membershipType); // 初始化时设置性别
+                if (!rideHistory.contains(visitor)) {
+                    rideHistory.add(visitor);
+                }
             }
             System.out.println("Ride history has been imported.");
         } catch (IOException e) {
