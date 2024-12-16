@@ -1,1 +1,119 @@
+import java.io.*;
+import java.util.*;
 
+public class Ride implements RideInterface {
+    private String rideName;
+    private int maxRiders;
+    private Employee operator;
+    private Queue<Visitor> waitingQueue = new LinkedList<>();
+    private List<Visitor> rideHistory = new LinkedList<>();
+    private int numOfCycles;
+
+    // 构造函数
+    public Ride(String rideName, int maxRiders, Employee operator) {
+        this.rideName = rideName;
+        this.maxRiders = maxRiders;
+        this.operator = operator;
+        this.numOfCycles = 0;
+    }
+
+    @Override
+    public void addVisitorToQueue(Visitor visitor) {
+        waitingQueue.add(visitor);
+        System.out.println(visitor.getName() + " have joined the queue.");
+    }
+
+    @Override
+    public void removeVisitorFromQueue() {
+        Visitor removed = waitingQueue.poll();
+        if (removed != null) {
+            System.out.println(removed.getName() + " Removed from the queue.");
+        } else {
+            System.out.println("The queue is empty and cannot be removed.");
+        }
+    }
+
+    @Override
+    public void printQueue() {
+        System.out.println("Visitors waiting in line:");
+        for (Visitor v : waitingQueue) {
+            System.out.println(v.getName());
+        }
+    }
+
+    @Override
+    public void addVisitorToHistory(Visitor visitor) {
+        rideHistory.add(visitor);
+    }
+
+    @Override
+    public boolean checkVisitorFromHistory(Visitor visitor) {
+        return rideHistory.contains(visitor);
+    }
+
+    @Override
+    public int numberOfVisitors() {
+        return rideHistory.size();
+    }
+
+    @Override
+    public void printRideHistory() {
+        System.out.println("Play History:");
+        for (Visitor v : rideHistory) {
+            System.out.println(v.getName());
+        }
+    }
+
+    @Override
+    public void runOneCycle() {
+        if (operator == null) {
+            System.out.println("No operator is assigned and the ride cannot be run.");
+            return;
+        }
+        if (waitingQueue.isEmpty()) {
+            System.out.println("The queue is empty and the ride cannot be run.");
+            return;
+        }
+
+        System.out.println("Start running a ride...");
+        int count = 0;
+        while (!waitingQueue.isEmpty() && count < maxRiders) {
+            Visitor visitor = waitingQueue.poll();
+            addVisitorToHistory(visitor);
+            System.out.println(visitor.getName() + " Play has been completed.");
+            count++;
+        }
+        numOfCycles++;
+        System.out.println("This round is complete, total " + count + " visitors played.");
+    }
+
+    // 导出游玩历史到文件
+    public void exportRideHistory() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("ride_history.csv"))) {
+            for (Visitor visitor : rideHistory) {
+                writer.write(visitor.getName() + "," + visitor.getVisitorID() + "," + visitor.getMembershipType() + "\n");
+            }
+            System.out.println("Ride history has been exported.");
+        } catch (IOException e) {
+            System.out.println("Error while exporting ride history: " + e.getMessage());
+        }
+    }
+
+    // 从文件导入游玩历史
+    public void importRideHistory() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("ride_history.csv"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+                String name = data[0];
+                String visitorID = data[1];
+                String membershipType = data[2];
+                Visitor visitor = new Visitor(name, 0, "", visitorID, membershipType); // 假设年龄设为0
+                rideHistory.add(visitor);
+            }
+            System.out.println("Ride history has been imported.");
+        } catch (IOException e) {
+            System.out.println("Error while importing ride history: " + e.getMessage());
+        }
+    }
+}
