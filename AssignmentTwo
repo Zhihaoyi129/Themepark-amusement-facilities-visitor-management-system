@@ -6,14 +6,23 @@ public class AssignmentTwo {
         Visitor v1 = new Visitor("小明", 20, "男", "V001", "普通");
         Visitor v2 = new Visitor("小红", 18, "女", "V002", "普通");
         Visitor v3 = new Visitor("小强", 25, "男", "V003", "会员");
+        Visitor v4 = new Visitor("小芳", 22, "女", "V004", "普通");
 
+        // 添加游客到队列
         rollerCoaster.addVisitorToQueue(v1);
         rollerCoaster.addVisitorToQueue(v2);
         rollerCoaster.addVisitorToQueue(v3);
+        rollerCoaster.addVisitorToQueue(v4);
 
+        // 第一次运行
         rollerCoaster.printQueue();
         rollerCoaster.runOneCycle();
         rollerCoaster.printRideHistory();
+
+        // 第二次运行
+        System.out.println("\n再次运行一轮游乐设施...");
+        rollerCoaster.printQueue(); // 打印剩余队列
+        rollerCoaster.runOneCycle();
+        rollerCoaster.printRideHistory(); // 打印最新游玩历史
     }
 }
-
