@@ -1,18 +1,21 @@
+import java.io.*;
+import java.util.*;
+
 public class AssignmentTwo {
     public static void main(String[] args) {
         // 创建操作员和游乐设施
-        Employee operator = new Employee("张伟", 30, "男", "EMP001", "Ride Operator");
-        Ride rollerCoaster = new Ride("过山车", 5, operator);
+        Employee operator = new Employee("ZhangWei", 30, "male", "EMP001", "Ride Operator");
+        Ride rollerCoaster = new Ride("roller coaster", 5, operator);
 
         // 创建游客
-        Visitor v1 = new Visitor("ZhangSan", 20, "男", "V001", "Normal");
-        Visitor v2 = new Visitor("LiSi", 18, "男", "V002", "Normal");
-        Visitor v3 = new Visitor("WangWu", 25, "男", "V003", "Vip");
-        Visitor v4 = new Visitor("ShenLiu", 22, "女", "V004", "Normal");
-        Visitor v5 = new Visitor("XiaoHong", 21, "女", "V005", "Normal");
-        Visitor v6 = new Visitor("XioaFang", 16, "女", "V006", "Vip");
-        Visitor v7 = new Visitor("XiaoMing", 28, "男", "V007", "Normal");
-        Visitor v8 = new Visitor("XiaoLi", 29, "男", "V008", "Vip");
+        Visitor v1 = new Visitor("ZhangSan", 20, "male", "V001", "Normal");
+        Visitor v2 = new Visitor("LiSi", 18, "male", "V002", "Normal");
+        Visitor v3 = new Visitor("WangWu", 25, "male", "V003", "Vip");
+        Visitor v4 = new Visitor("ShenLiu", 22, "female", "V004", "Normal");
+        Visitor v5 = new Visitor("XiaoHong", 21, "female", "V005", "Normal");
+        Visitor v6 = new Visitor("XiaoFang", 16, "female", "V006", "Vip");
+        Visitor v7 = new Visitor("XiaoLi", 28, "male", "V007", "Normal");
+        Visitor v8 = new Visitor("XiaoLi", 29, "male", "V008", "Vip");
 
         // 添加游客到队列
         rollerCoaster.addVisitorToQueue(v1);
@@ -24,31 +27,64 @@ public class AssignmentTwo {
         rollerCoaster.addVisitorToQueue(v7);
         rollerCoaster.addVisitorToQueue(v8);
 
-        // 第一次运行
+        // 打印原始游客队列
+        System.out.println("Original tourist queue：");
         rollerCoaster.printQueue();
+
+        // 第一次运行游乐设施
+        System.out.println("\nFirst ride run...");
         rollerCoaster.runOneCycle();
         rollerCoaster.printRideHistory();
 
-        // 第二次运行
-        System.out.println("\nRun another ride...");
-        rollerCoaster.printQueue(); // 打印剩余队列
+        // 第二次运行游乐设施
+        System.out.println("\nSecond ride run...");
         rollerCoaster.runOneCycle();
-        rollerCoaster.printRideHistory(); // 打印最新游玩历史
-
-        // 第三次运行
-        System.out.println("\nRun another ride...");
-        rollerCoaster.printQueue(); // 打印剩余队列
+        rollerCoaster.printRideHistory();
+        // 第三次运行游乐设施
+        System.out.println("\nThird ride run...");
         rollerCoaster.runOneCycle();
-        rollerCoaster.printRideHistory(); // 打印最新游玩历史
+        rollerCoaster.printRideHistory();
+        
 
-        // 导出游玩历史到文件
-        System.out.println("\nExporting ride history...");
-        rollerCoaster.exportRideHistory(); // 导出游玩历史到文件
+        // 导出游玩的游客名单到 CSV 文件
+        exportRideHistoryToCSV(rollerCoaster.getRideHistory(), "ride_history.csv");
 
-        // 创建一个新的游乐设施，并导入历史记录
-        System.out.println("\nImporting ride history...");
-        Ride newRollerCoaster = new Ride("过山车", 5, operator);
-        newRollerCoaster.importRideHistory(); // 从文件中导入游玩历史
-        newRollerCoaster.printRideHistory(); // 打印导入后的游玩历史
+        // 按名字排序并打印结果
+        printSortedVisitorsByName(rollerCoaster.getRideHistory());
+    }
+
+    // 导出游玩的游客名单到 CSV 文件的方法
+    public static void exportRideHistoryToCSV(List<Visitor> rideHistory, String fileName) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            writer.write("Name,Age,Gender,VisitorID,MembershipType\n"); // 写入标题行
+            for (Visitor visitor : rideHistory) {
+                writer.write(visitor.getName() + ","
+                        + visitor.getAge() + ","
+                        + visitor.getGender() + ","
+                        + visitor.getVisitorID() + ","
+                        + visitor.getMembershipType() + "\n");
+            }
+            System.out.println("\nThe list of visitors to the tour has been exported to: " + fileName);
+        } catch (IOException e) {
+            System.out.println("An error occurred while exporting play history: " + e.getMessage());
+        }
+    }
+
+    // 按名字排序并打印结果的方法
+    public static void printSortedVisitorsByName(List<Visitor> visitors) {
+        visitors.sort((v1, v2) -> {
+            // 首先按名字的首字母排序
+            int nameCompare = v1.getName().compareTo(v2.getName());
+            if (nameCompare != 0) {
+                return nameCompare;
+            }
+            // 如果名字相同，则按年龄排序
+            return Integer.compare(v1.getAge(), v2.getAge());
+        });
+
+        System.out.println("\nList of visitors sorted by name:");
+        for (Visitor visitor : visitors) {
+            System.out.println(visitor.getName() + ", " + visitor.getAge() + "years old, Gender: " + visitor.getGender() + ", Membership Type: " + visitor.getMembershipType());
+        }
     }
 }
