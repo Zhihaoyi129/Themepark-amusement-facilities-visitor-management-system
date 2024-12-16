@@ -5,15 +5,14 @@ public class AssignmentTwo {
         Ride rollerCoaster = new Ride("过山车", 5, operator);
 
         // 创建游客
-        Visitor v1 = new Visitor("张三", 20, "男", "V001", "普通");
-        Visitor v2 = new Visitor("李四", 18, "男", "V002", "普通");
-        Visitor v3 = new Visitor("王五", 25, "男", "V003", "会员");
-        Visitor v4 = new Visitor("沈六", 22, "女", "V004", "普通");
-        Visitor v5 = new Visitor("小红", 21, "女", "V005", "普通");
-        Visitor v6 = new Visitor("小芳", 16, "女", "V006", "普通");
-        Visitor v7 = new Visitor("小明", 28, "男", "V007", "会员");
-        Visitor v8 = new Visitor("小力", 29, "男", "V008", "普通");
-        Visitor v9 = new Visitor("张三", 20, "男", "V001", "普通");
+        Visitor v1 = new Visitor("ZhangSan", 20, "男", "V001", "Normal");
+        Visitor v2 = new Visitor("LiSi", 18, "男", "V002", "Normal");
+        Visitor v3 = new Visitor("WangWu", 25, "男", "V003", "Vip");
+        Visitor v4 = new Visitor("ShenLiu", 22, "女", "V004", "Normal");
+        Visitor v5 = new Visitor("XiaoHong", 21, "女", "V005", "Normal");
+        Visitor v6 = new Visitor("XioaFang", 16, "女", "V006", "Vip");
+        Visitor v7 = new Visitor("XiaoMing", 28, "男", "V007", "Normal");
+        Visitor v8 = new Visitor("XiaoLi", 29, "男", "V008", "Vip");
 
         // 添加游客到队列
         rollerCoaster.addVisitorToQueue(v1);
@@ -24,7 +23,6 @@ public class AssignmentTwo {
         rollerCoaster.addVisitorToQueue(v6);
         rollerCoaster.addVisitorToQueue(v7);
         rollerCoaster.addVisitorToQueue(v8);
-        rollerCoaster.addVisitorToQueue(v9);
 
         // 第一次运行
         rollerCoaster.printQueue();
