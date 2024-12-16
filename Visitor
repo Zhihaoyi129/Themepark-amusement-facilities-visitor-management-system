@@ -1,1 +1,25 @@
+public class Visitor extends Person {
+    private String visitorID;
+    private String membershipType;
 
+    // 默认构造函数
+    public Visitor() {
+        super();
+        this.visitorID = "未分配";
+        this.membershipType = "普通访客";
+    }
+
+    // 带参数的构造函数
+    public Visitor(String name, int age, String gender, String visitorID, String membershipType) {
+        super(name, age, gender);
+        this.visitorID = visitorID;
+        this.membershipType = membershipType;
+    }
+
+    // Getter 和 Setter 方法
+    public String getVisitorID() { return visitorID; }
+    public void setVisitorID(String visitorID) { this.visitorID = visitorID; }
+
+    public String getMembershipType() { return membershipType; }
+    public void setMembershipType(String membershipType) { this.membershipType = membershipType; }
+}
