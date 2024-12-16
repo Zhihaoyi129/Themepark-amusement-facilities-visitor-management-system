@@ -6,9 +6,9 @@ public class Ride implements RideInterface {
     private final Employee operator;
     private final Queue<Visitor> waitingQueue = new LinkedList<>();
     private final List<Visitor> rideHistory = new LinkedList<>();
-    private int numOfCycles; 
-    
-    public Ride(String rideName, int maxRiders, Employee operator){ 
+    private int numOfCycles;
+
+    public Ride(String rideName, int maxRiders, Employee operator) {
         this.maxRiders = maxRiders;
         this.operator = operator;
         this.numOfCycles = 0;
@@ -87,15 +87,20 @@ public class Ride implements RideInterface {
     }
 
     public void exportRideHistory() {
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream("ride_history.csv"), "UTF-8"))) { // 指定 UTF-8 编码
+        String fileName = "ride_history.csv"; // 导出的文件名
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            // 写入 CSV 文件头
+            writer.write("Name,VisitorID,MembershipType,Gender\n");
+
+            // 写入游玩历史记录
             for (Visitor visitor : rideHistory) {
-                writer.write(visitor.getName() + "," 
-                            + visitor.getVisitorID() + "," 
-                            + visitor.getMembershipType() + "," 
-                            + visitor.getGender() + "\n"); // 包含性别字段
+                writer.write(visitor.getName() + ","
+                        + visitor.getVisitorID() + ","
+                        + visitor.getMembershipType() + ","
+                        + visitor.getGender() + "\n");
             }
-            System.out.println("Ride history has been exported.");
+
+            System.out.println("Ride history has been exported to " + fileName);
         } catch (IOException e) {
             System.out.println("Error while exporting ride history: " + e.getMessage());
         }
@@ -104,7 +109,7 @@ public class Ride implements RideInterface {
     public void importRideHistory() {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(
                 new FileInputStream("ride_history.csv"), "UTF-8"))) { // 设置 UTF-8 编码
-            String line;
+            String line = reader.readLine(); // 读取标题行，跳过
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
                 String name = data[0];
@@ -120,5 +125,15 @@ public class Ride implements RideInterface {
         } catch (IOException e) {
             System.out.println("Error while importing ride history: " + e.getMessage());
         }
+    }
+
+    // 新增的 getQueue() 方法，用于获取游客等待队列
+    public Queue<Visitor> getQueue() {
+        return waitingQueue;
+    }
+
+    // 新增的 getRideHistory() 方法，用于获取游玩历史记录
+    public List<Visitor> getRideHistory() {
+        return rideHistory; // 返回游玩历史列表
     }
 }
